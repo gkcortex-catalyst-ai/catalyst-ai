@@ -8,6 +8,7 @@ import com.gkcorex.catalyst.ai.entities.ProjectMember;
 import com.gkcorex.catalyst.ai.entities.ProjectMemberId;
 import com.gkcorex.catalyst.ai.entities.User;
 import com.gkcorex.catalyst.ai.enums.ProjectRole;
+import com.gkcorex.catalyst.ai.exceptions.BadRequestException;
 import com.gkcorex.catalyst.ai.exceptions.ResourceNotFoundException;
 import com.gkcorex.catalyst.ai.mappers.ProjectMapper;
 import com.gkcorex.catalyst.ai.repositories.ProjectMemberRepository;
@@ -15,6 +16,7 @@ import com.gkcorex.catalyst.ai.repositories.ProjectRepository;
 import com.gkcorex.catalyst.ai.repositories.UserRepository;
 import com.gkcorex.catalyst.ai.security.JwtAuthUtil;
 import com.gkcorex.catalyst.ai.services.ProjectService;
+import com.gkcorex.catalyst.ai.services.SubscriptionService;
 import jakarta.transaction.Transactional;
 import java.time.Instant;
 import java.util.List;
@@ -40,6 +42,8 @@ public class ProjectServiceImpl implements ProjectService {
 
   JwtAuthUtil jwtAuthUtil;
 
+  SubscriptionService subscriptionService;
+
   @Override
   public List<ProjectSummaryResponse> getUserProjects() {
     Long userId = jwtAuthUtil.getCurrentUserId();
@@ -57,6 +61,9 @@ public class ProjectServiceImpl implements ProjectService {
 
   @Override
   public ProjectResponse createProject(ProjectRequest projectRequest) {
+      if(!subscriptionService.canCreateNewProject()){
+          throw new BadRequestException("User cannot create a new project with current plan.");
+      }
     Long userId = jwtAuthUtil.getCurrentUserId();
     User owner =
         userRepository

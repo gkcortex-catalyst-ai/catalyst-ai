@@ -4,9 +4,8 @@ import com.gkcorex.catalyst.ai.enums.SubscriptionStatus;
 import jakarta.persistence.*;
 
 import java.time.Instant;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -15,6 +14,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Setter
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Subscription {
 
   @Id
@@ -25,7 +27,7 @@ public class Subscription {
   @JoinColumn(nullable = false, name = "user_id")
   User user;
 
-  @OneToMany(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(nullable = false, name = "plan_id")
   Plan plan;
 
@@ -44,5 +46,5 @@ public class Subscription {
   Instant createdAt;
 
   @UpdateTimestamp
-  Instant updateAt;
+  Instant updatedAt;
 }

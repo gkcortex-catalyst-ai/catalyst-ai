@@ -6,6 +6,7 @@ import com.gkcorex.catalyst.ai.dtos.subscription.PortalResponse;
 import com.gkcorex.catalyst.ai.entities.Plan;
 import com.gkcorex.catalyst.ai.entities.User;
 import com.gkcorex.catalyst.ai.enums.SubscriptionStatus;
+import com.gkcorex.catalyst.ai.exceptions.BadRequestException;
 import com.gkcorex.catalyst.ai.exceptions.ResourceNotFoundException;
 import com.gkcorex.catalyst.ai.repositories.PlanRepository;
 import com.gkcorex.catalyst.ai.repositories.UserRepository;
@@ -44,7 +45,7 @@ public class StripePaymentProcessorImpl implements PaymentProcessorService {
   final SubscriptionService subscriptionService;
 
   @Override
-  public CheckoutResponse createCheckoutSessionUrl(CheckoutRequest checkoutRequest) {
+  public CheckoutResponse createCheckoutSessionUrl(CheckoutRequest checkoutRequest){
     Plan plan =
         planRepository
             .findById(checkoutRequest.planId())
@@ -90,7 +91,25 @@ public class StripePaymentProcessorImpl implements PaymentProcessorService {
 
   @Override
   public PortalResponse openCustomerPortal() {
-    return null;
+    Long userId = jwtAuthUtil.getCurrentUserId();
+    User user = getUser(userId);
+
+    String stripeCustomerId = user.getStripeCustomerId();
+
+    if(stripeCustomerId==null || stripeCustomerId.isEmpty())
+        throw new BadRequestException("User does not have stripe customer id: "+userId);
+
+    try{
+        var portalSession = com.stripe.model.billingportal.Session.create(
+                com.stripe.param.billingportal.SessionCreateParams.builder()
+                        .setCustomer(stripeCustomerId)
+                        .setReturnUrl(frontendUrl)
+                        .build()
+        );
+        return new PortalResponse(portalSession.getUrl());
+    } catch (StripeException e) {
+        throw new RuntimeException(e);
+    }
   }
 
   @Override
@@ -175,18 +194,18 @@ public class StripePaymentProcessorImpl implements PaymentProcessorService {
   }
 
   private void handleInvoicePaid(Invoice invoice) {
-      String subId = extractSubscriptionId(invoice);
-      if(subId==null)
+      String subscriptionId = extractSubscriptionId(invoice);
+      if(subscriptionId==null)
           return;
       try {
-          Subscription subscription = Subscription.retrieve(subId);
+          Subscription subscription = Subscription.retrieve(subscriptionId);
 
           var item = subscription.getItems().getData().get(0);
           Instant periodStart = toInstant(item.getCurrentPeriodStart());
           Instant periodEnd = toInstant(item.getCurrentPeriodEnd());
 
           subscriptionService.renewSubscriptionPeriod(
-                  subId,
+                  subscriptionId,
                   periodStart,
                   periodEnd
           );
@@ -196,10 +215,10 @@ public class StripePaymentProcessorImpl implements PaymentProcessorService {
   }
 
   private void handelInvoicePaymentFailed(Invoice invoice) {
-      String subId = extractSubscriptionId(invoice);
-      if(subId==null)
+      String subscriptionId = extractSubscriptionId(invoice);
+      if(subscriptionId==null)
           return;
-      subscriptionService.markSubscriptionPastDue(subId);
+      subscriptionService.markSubscriptionPastDue(subscriptionId);
   }
 
   private User getUser(Long userId) {

@@ -9,4 +9,8 @@ import java.util.Set;
 
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
     Optional<Subscription> findByUserIdAndStatusIn(Long userId, Set<SubscriptionStatus> status);
+
+    boolean existsByStripeSubscriptionId(String subscriptionId);
+
+    Optional<Subscription> findByStripeSubscriptionId(String subscriptionId);
 }

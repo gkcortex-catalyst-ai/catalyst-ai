@@ -20,7 +20,9 @@ public interface SubscriptionService {
 
     void cancelSubscription(String subscriptionId);
 
-    void renewSubscriptionPeriod(String subId, Instant periodStart, Instant periodEnd);
+    void renewSubscriptionPeriod(String subscriptionId, Instant periodStart, Instant periodEnd);
 
-    void markSubscriptionPastDue(String subId);
+    void markSubscriptionPastDue(String subscriptionId);
+
+    boolean canCreateNewProject();
 }
