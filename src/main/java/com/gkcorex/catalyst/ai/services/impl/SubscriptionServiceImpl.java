@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class SubscriptionServiceImpl implements SubscriptionService {
 
-    private final Integer FREE_TIER_PROJECTS_ALLOWED = 1;
+    private final Integer FREE_TIER_PROJECTS_ALLOWED = 100;
 
     JwtAuthUtil jwtAuthUtil;
 

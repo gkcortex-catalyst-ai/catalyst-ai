@@ -2,7 +2,7 @@ package com.gkcorex.catalyst.ai.controllers;
 
 import com.gkcorex.catalyst.ai.dtos.project.FileContentResponse;
 import com.gkcorex.catalyst.ai.dtos.project.FileNode;
-import com.gkcorex.catalyst.ai.services.FileService;
+import com.gkcorex.catalyst.ai.services.ProjectFileService;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class FileController {
 
-  FileService fileService;
+  ProjectFileService fileService;
 
   @GetMapping
   public ResponseEntity<List<FileNode>> getFileTree(@PathVariable Long projectId) {
