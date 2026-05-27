@@ -2,4 +2,4 @@ package com.gkcorex.catalyst.ai.dtos.project;
 
 import java.time.Instant;
 
-public record FileNode(String path, Instant modifiedAt, Long size, String type) {}
+public record FileNode(String path) {}
