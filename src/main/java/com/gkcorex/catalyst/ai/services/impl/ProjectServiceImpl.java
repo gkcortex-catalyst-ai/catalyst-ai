@@ -61,9 +61,9 @@ public class ProjectServiceImpl implements ProjectService {
 
   @Override
   public ProjectResponse createProject(ProjectRequest projectRequest) {
-      if(!subscriptionService.canCreateNewProject()){
-          throw new BadRequestException("User cannot create a new project with current plan.");
-      }
+    if (!subscriptionService.canCreateNewProject()) {
+      throw new BadRequestException("User cannot create a new project with current plan.");
+    }
     Long userId = jwtAuthUtil.getCurrentUserId();
     User owner =
         userRepository

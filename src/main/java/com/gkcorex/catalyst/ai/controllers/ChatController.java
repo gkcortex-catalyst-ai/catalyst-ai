@@ -18,14 +18,12 @@ import reactor.core.publisher.Flux;
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class ChatController {
-    AiGenerationService aiGenerationService;
+  AiGenerationService aiGenerationService;
 
-    @PostMapping(value = "/api/chat/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<ServerSentEvent<String>> streamChat(@RequestBody ChatRequest chatRequest){
-        return aiGenerationService.streamResponse(chatRequest.message(), chatRequest.projectId())
-                .map(data -> ServerSentEvent.<String>builder()
-                        .data(data)
-                        .build()
-                );
-    }
+  @PostMapping(value = "/api/chat/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+  public Flux<ServerSentEvent<String>> streamChat(@RequestBody ChatRequest chatRequest) {
+    return aiGenerationService
+        .streamResponse(chatRequest.message(), chatRequest.projectId())
+        .map(data -> ServerSentEvent.<String>builder().data(data).build());
+  }
 }

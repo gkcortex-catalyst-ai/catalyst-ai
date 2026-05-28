@@ -2,9 +2,7 @@ package com.gkcorex.catalyst.ai.entities;
 
 import com.gkcorex.catalyst.ai.enums.SubscriptionStatus;
 import jakarta.persistence.*;
-
 import java.time.Instant;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
@@ -42,9 +40,7 @@ public class Subscription {
 
   Boolean cancelAtPeriodEnd = false;
 
-  @CreationTimestamp
-  Instant createdAt;
+  @CreationTimestamp Instant createdAt;
 
-  @UpdateTimestamp
-  Instant updatedAt;
+  @UpdateTimestamp Instant updatedAt;
 }

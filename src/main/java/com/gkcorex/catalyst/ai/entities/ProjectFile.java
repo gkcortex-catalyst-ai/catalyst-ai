@@ -1,9 +1,7 @@
 package com.gkcorex.catalyst.ai.entities;
 
 import jakarta.persistence.*;
-
 import java.time.Instant;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,9 +29,7 @@ public class ProjectFile {
 
   String minioObjectKey;
 
-  @CreationTimestamp
-  Instant createdAt;
+  @CreationTimestamp Instant createdAt;
 
-  @UpdateTimestamp
-  Instant updatedAt;
+  @UpdateTimestamp Instant updatedAt;
 }

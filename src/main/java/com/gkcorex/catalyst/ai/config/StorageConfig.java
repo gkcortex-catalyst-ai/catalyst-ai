@@ -9,15 +9,12 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "minio")
 public class StorageConfig {
 
-    private String url;
-    private String accessKey;
-    private String secretKey;
+  private String url;
+  private String accessKey;
+  private String secretKey;
 
-    @Bean
-    public MinioClient minioClient(){
-        return MinioClient.builder()
-                .endpoint(url)
-                .credentials(accessKey, secretKey)
-                .build();
-    }
+  @Bean
+  public MinioClient minioClient() {
+    return MinioClient.builder().endpoint(url).credentials(accessKey, secretKey).build();
+  }
 }

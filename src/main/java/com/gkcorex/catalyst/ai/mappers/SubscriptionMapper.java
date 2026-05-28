@@ -9,7 +9,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface SubscriptionMapper {
 
-    SubscriptionResponse mapSubscriptionToSubscriptionResponse(Subscription subscription);
+  SubscriptionResponse mapSubscriptionToSubscriptionResponse(Subscription subscription);
 
-    PlanResponse mapPlanToPlanResponse(Plan plan);
+  PlanResponse mapPlanToPlanResponse(Plan plan);
 }

@@ -18,11 +18,11 @@ public interface SubscriptionService {
       Long planId,
       Boolean cancelAtPeriodEnd);
 
-    void cancelSubscription(String subscriptionId);
+  void cancelSubscription(String subscriptionId);
 
-    void renewSubscriptionPeriod(String subscriptionId, Instant periodStart, Instant periodEnd);
+  void renewSubscriptionPeriod(String subscriptionId, Instant periodStart, Instant periodEnd);
 
-    void markSubscriptionPastDue(String subscriptionId);
+  void markSubscriptionPastDue(String subscriptionId);
 
-    boolean canCreateNewProject();
+  boolean canCreateNewProject();
 }

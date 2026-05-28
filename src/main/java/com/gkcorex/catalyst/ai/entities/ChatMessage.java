@@ -2,9 +2,7 @@ package com.gkcorex.catalyst.ai.entities;
 
 import com.gkcorex.catalyst.ai.enums.MessageRole;
 import jakarta.persistence.*;
-
 import java.time.Instant;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
@@ -25,18 +23,18 @@ public class ChatMessage {
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumns({
-          @JoinColumn(name = "project_id", referencedColumnName = "project_id", nullable = false),
-          @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    @JoinColumn(name = "project_id", referencedColumnName = "project_id", nullable = false),
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
   })
   ChatSession chatSession;
 
   @Column(columnDefinition = "text", nullable = false)
   String content;
 
-//  /*
-//     JSON Array of Tools Called
-//  */
-//  String toolCalls;
+  //  /*
+  //     JSON Array of Tools Called
+  //  */
+  //  String toolCalls;
 
   Integer tokensUsed = 0;
 
@@ -44,6 +42,5 @@ public class ChatMessage {
   @Column(nullable = false) // USER,ASSISTANT
   MessageRole role;
 
-  @CreationTimestamp
-  Instant createdAt;
+  @CreationTimestamp Instant createdAt;
 }
