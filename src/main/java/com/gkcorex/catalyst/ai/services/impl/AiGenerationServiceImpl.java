@@ -1,6 +1,7 @@
 package com.gkcorex.catalyst.ai.services.impl;
 
 import com.gkcorex.catalyst.ai.llm.PromptUtils;
+import com.gkcorex.catalyst.ai.llm.advisors.FileTreeContextAdvisor;
 import com.gkcorex.catalyst.ai.security.JwtAuthUtil;
 import com.gkcorex.catalyst.ai.services.AiGenerationService;
 import com.gkcorex.catalyst.ai.services.ProjectFileService;
@@ -30,6 +31,8 @@ public class AiGenerationServiceImpl implements AiGenerationService {
 
   ProjectFileService projectFileService;
 
+  FileTreeContextAdvisor fileTreeContextAdvisor;
+
   static Pattern FILE_TAG_PATTERN =
       Pattern.compile("<file path=\"([^\"]+)\">(.*?)</file>", Pattern.DOTALL);
 
@@ -37,9 +40,6 @@ public class AiGenerationServiceImpl implements AiGenerationService {
   @PreAuthorize("@security.canEditProject(#projectId)")
   public Flux<String> streamResponse(String userMessage, Long projectId) {
     Long userId = jwtAuthUtil.getCurrentUserId();
-    // create project
-
-    // create new chat session
     createChatSessionIfNotExists(projectId, userId);
     Map<String, Object> advisorParams =
         Map.of(
@@ -55,6 +55,7 @@ public class AiGenerationServiceImpl implements AiGenerationService {
         .advisors(
             advisorSpec -> {
               advisorSpec.params(advisorParams);
+              advisorSpec.advisors(fileTreeContextAdvisor);
             })
         .stream()
         .chatResponse()

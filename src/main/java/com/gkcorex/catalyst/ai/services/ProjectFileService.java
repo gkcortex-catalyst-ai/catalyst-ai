@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ProjectFileService {
 
-  List<FileNode> getFileTree(Long userId, Long projectId);
+  List<FileNode> getFileTree(Long projectId);
 
   FileContentResponse getFileContent(Long userId, Long projectId, String path);
 

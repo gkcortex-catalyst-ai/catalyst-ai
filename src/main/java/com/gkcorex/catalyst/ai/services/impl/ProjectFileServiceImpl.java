@@ -27,22 +27,22 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProjectFileServiceImpl implements ProjectFileService {
 
-  ProjectRepository projectRepository;
+  final ProjectRepository projectRepository;
 
-  ProjectFileRepository projectFileRepository;
+  final ProjectFileRepository projectFileRepository;
 
-  MinioClient minioClient;
+  final MinioClient minioClient;
 
-  ProjectFileMapper projectFileMapper;
+  final ProjectFileMapper projectFileMapper;
 
   @Value("${minio.project-bucket}")
-  private String projectBucket;
+  String projectBucket;
 
   @Override
-  public List<FileNode> getFileTree(Long userId, Long projectId) {
+  public List<FileNode> getFileTree(Long projectId) {
     List<ProjectFile> projectFileList = projectFileRepository.findByProjectId(projectId);
     return projectFileMapper.mapProjectFilesToFileNodes(projectFileList);
   }

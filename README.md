@@ -37,6 +37,7 @@
 
 **Database & Management:**
 - PostgresSQL 15
+- Minio Object Store
 - DBeaver
 
 **IDE:** 
@@ -50,3 +51,10 @@
 - Stripe
 - Stripe Cli
 - Webhooks
+
+**AI Integration:**
+- Spring AI 
+- Open Router
+- LLM's
+- Chat Client
+- Advisors
