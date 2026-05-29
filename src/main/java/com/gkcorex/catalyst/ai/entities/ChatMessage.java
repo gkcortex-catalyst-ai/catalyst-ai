@@ -3,6 +3,8 @@ package com.gkcorex.catalyst.ai.entities;
 import com.gkcorex.catalyst.ai.enums.MessageRole;
 import jakarta.persistence.*;
 import java.time.Instant;
+import java.util.List;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,19 +30,18 @@ public class ChatMessage {
   })
   ChatSession chatSession;
 
-  @Column(columnDefinition = "text", nullable = false)
+  @Column(columnDefinition = "text")
   String content;
-
-  //  /*
-  //     JSON Array of Tools Called
-  //  */
-  //  String toolCalls;
 
   Integer tokensUsed = 0;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false) // USER,ASSISTANT
   MessageRole role;
+
+  @OneToMany(mappedBy = "chatMessage", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @OrderBy("sequenceOrder ASC")
+  List<ChatEvent> events;
 
   @CreationTimestamp Instant createdAt;
 }
