@@ -2,6 +2,7 @@ package com.gkcorex.catalyst.ai.services.impl;
 
 import com.gkcorex.catalyst.ai.llm.PromptUtils;
 import com.gkcorex.catalyst.ai.llm.advisors.FileTreeContextAdvisor;
+import com.gkcorex.catalyst.ai.llm.tools.CodeGenerationTools;
 import com.gkcorex.catalyst.ai.security.JwtAuthUtil;
 import com.gkcorex.catalyst.ai.services.AiGenerationService;
 import com.gkcorex.catalyst.ai.services.ProjectFileService;
@@ -48,10 +49,14 @@ public class AiGenerationServiceImpl implements AiGenerationService {
 
     StringBuilder fullResponseBuffer = new StringBuilder();
 
+    CodeGenerationTools codeGenerationTools =
+        new CodeGenerationTools(projectFileService, projectId);
+
     return chatClient
         .prompt()
         .system(PromptUtils.CODE_GENERATION_SYSTEM_PROMPT)
         .user(userMessage)
+        .tools(codeGenerationTools)
         .advisors(
             advisorSpec -> {
               advisorSpec.params(advisorParams);

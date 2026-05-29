@@ -9,6 +9,7 @@ import com.gkcorex.catalyst.ai.mappers.ProjectFileMapper;
 import com.gkcorex.catalyst.ai.repositories.ProjectFileRepository;
 import com.gkcorex.catalyst.ai.repositories.ProjectRepository;
 import com.gkcorex.catalyst.ai.services.ProjectFileService;
+import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import java.io.ByteArrayInputStream;
@@ -38,6 +39,8 @@ public class ProjectFileServiceImpl implements ProjectFileService {
 
   final ProjectFileMapper projectFileMapper;
 
+  static final String BUCKET_NAME = "projects";
+
   @Value("${minio.project-bucket}")
   String projectBucket;
 
@@ -48,8 +51,20 @@ public class ProjectFileServiceImpl implements ProjectFileService {
   }
 
   @Override
-  public FileContentResponse getFileContent(Long userId, Long projectId, String path) {
-    return null;
+  public FileContentResponse getFileContent(Long projectId, String path) {
+    String objectName = projectId + "/" + path;
+
+    try {
+      InputStream is =
+          minioClient.getObject(
+              GetObjectArgs.builder().bucket(BUCKET_NAME).object(objectName).build());
+
+      String content = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+      return new FileContentResponse(path, content);
+    } catch (Exception e) {
+      log.error("Failed to read file: {}/{}", projectId, path, e);
+      throw new RuntimeException("Failed to read file3 content", e);
+    }
   }
 
   @Override

@@ -16,6 +16,7 @@ import com.gkcorex.catalyst.ai.repositories.ProjectRepository;
 import com.gkcorex.catalyst.ai.repositories.UserRepository;
 import com.gkcorex.catalyst.ai.security.JwtAuthUtil;
 import com.gkcorex.catalyst.ai.services.ProjectService;
+import com.gkcorex.catalyst.ai.services.ProjectTemplateService;
 import com.gkcorex.catalyst.ai.services.SubscriptionService;
 import jakarta.transaction.Transactional;
 import java.time.Instant;
@@ -43,6 +44,8 @@ public class ProjectServiceImpl implements ProjectService {
   JwtAuthUtil jwtAuthUtil;
 
   SubscriptionService subscriptionService;
+
+  ProjectTemplateService projectTemplateService;
 
   @Override
   public List<ProjectSummaryResponse> getUserProjects() {
@@ -83,6 +86,9 @@ public class ProjectServiceImpl implements ProjectService {
             .acceptedAt(Instant.now())
             .build();
     projectMemberRepository.save(projectMember);
+
+    projectTemplateService.initializeProjectFromTemplate(project.getId());
+
     return projectMapper.mapEntityToResponse(project);
   }
 

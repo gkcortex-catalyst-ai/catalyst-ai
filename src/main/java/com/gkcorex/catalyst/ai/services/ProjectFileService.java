@@ -8,7 +8,7 @@ public interface ProjectFileService {
 
   List<FileNode> getFileTree(Long projectId);
 
-  FileContentResponse getFileContent(Long userId, Long projectId, String path);
+  FileContentResponse getFileContent(Long projectId, String path);
 
   void saveFile(Long projectId, String filePath, String fileContent);
 }
