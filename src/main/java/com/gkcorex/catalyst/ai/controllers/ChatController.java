@@ -2,6 +2,7 @@ package com.gkcorex.catalyst.ai.controllers;
 
 import com.gkcorex.catalyst.ai.dtos.chat.ChatRequest;
 import com.gkcorex.catalyst.ai.dtos.chat.ChatResponse;
+import com.gkcorex.catalyst.ai.dtos.chat.StreamResponse;
 import com.gkcorex.catalyst.ai.services.AiGenerationService;
 import com.gkcorex.catalyst.ai.services.ChatService;
 import java.util.List;
@@ -24,14 +25,18 @@ public class ChatController {
 
   ChatService chatService;
 
-  @PostMapping(value = "/api/chat/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-  public Flux<ServerSentEvent<String>> streamChat(@RequestBody ChatRequest chatRequest) {
+  //  @PostMapping(value = "/api/chat/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+  @PostMapping(
+      value = "/api/v1/intelligence/chat/stream",
+      produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+  public Flux<ServerSentEvent<StreamResponse>> streamChat(@RequestBody ChatRequest chatRequest) {
     return aiGenerationService
         .streamResponse(chatRequest.message(), chatRequest.projectId())
-        .map(data -> ServerSentEvent.<String>builder().data(data).build());
+        .map(data -> ServerSentEvent.<StreamResponse>builder().data(data).build());
   }
 
-  @GetMapping("/projects/{projectId}")
+  @GetMapping("/api/v1/intelligence/chat/projects/{projectId}")
+  //  @GetMapping("/projects/{projectId}")
   public ResponseEntity<List<ChatResponse>> getChatHistory(@PathVariable Long projectId) {
     return ResponseEntity.ok(chatService.getProjectChatHistory(projectId));
   }

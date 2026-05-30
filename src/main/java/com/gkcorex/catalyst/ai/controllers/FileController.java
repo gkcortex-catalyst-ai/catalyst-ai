@@ -1,20 +1,17 @@
 package com.gkcorex.catalyst.ai.controllers;
 
 import com.gkcorex.catalyst.ai.dtos.project.FileContentResponse;
-import com.gkcorex.catalyst.ai.dtos.project.FileNode;
+import com.gkcorex.catalyst.ai.dtos.project.FileTreeResponse;
 import com.gkcorex.catalyst.ai.services.ProjectFileService;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/projects/{projectId}/files")
+@RequestMapping("/api/v1/workspace/projects/{projectId}/files")
+// @RequestMapping("/api/projects/{projectId}/files")
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class FileController {
@@ -22,13 +19,13 @@ public class FileController {
   ProjectFileService fileService;
 
   @GetMapping
-  public ResponseEntity<List<FileNode>> getFileTree(@PathVariable Long projectId) {
+  public ResponseEntity<FileTreeResponse> getFileTree(@PathVariable Long projectId) {
     return ResponseEntity.ok(fileService.getFileTree(projectId));
   }
 
-  @GetMapping("/{*path}")
+  @GetMapping("/content")
   public ResponseEntity<FileContentResponse> getFile(
-      @PathVariable Long projectId, @PathVariable String path) {
+      @PathVariable Long projectId, @RequestParam String path) {
     return ResponseEntity.ok(fileService.getFileContent(projectId, path));
   }
 }

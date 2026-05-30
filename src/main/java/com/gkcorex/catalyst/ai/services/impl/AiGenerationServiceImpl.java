@@ -1,5 +1,6 @@
 package com.gkcorex.catalyst.ai.services.impl;
 
+import com.gkcorex.catalyst.ai.dtos.chat.StreamResponse;
 import com.gkcorex.catalyst.ai.entities.*;
 import com.gkcorex.catalyst.ai.enums.ChatEventType;
 import com.gkcorex.catalyst.ai.enums.MessageRole;
@@ -14,7 +15,6 @@ import com.gkcorex.catalyst.ai.services.AiGenerationService;
 import com.gkcorex.catalyst.ai.services.ProjectFileService;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 import lombok.AccessLevel;
@@ -57,7 +57,7 @@ public class AiGenerationServiceImpl implements AiGenerationService {
 
   @Override
   @PreAuthorize("@security.canEditProject(#projectId)")
-  public Flux<String> streamResponse(String userMessage, Long projectId) {
+  public Flux<StreamResponse> streamResponse(String userMessage, Long projectId) {
     Long userId = jwtAuthUtil.getCurrentUserId();
     ChatSession chatSession = createChatSessionIfNotExists(projectId, userId);
     Map<String, Object> advisorParams =
@@ -106,7 +106,10 @@ public class AiGenerationServiceImpl implements AiGenerationService {
             })
         .doOnError(error -> log.error("Error during streaming for project response"))
         .map(
-            chatResponse -> Objects.requireNonNull(chatResponse.getResult().getOutput().getText()));
+            response -> {
+              String text = response.getResult().getOutput().getText();
+              return new StreamResponse(text != null ? text : "");
+            });
   }
 
   private void finalizeChats(

@@ -50,16 +50,24 @@ public class ProjectServiceImpl implements ProjectService {
   @Override
   public List<ProjectSummaryResponse> getUserProjects() {
     Long userId = jwtAuthUtil.getCurrentUserId();
-    List<Project> projects = projectRepository.findAllAccessibleByUser(userId);
-    return projectMapper.mapEntitiesToSummaryResponses(projects);
+    var projectsWithRoles = projectRepository.findAllAccessibleByUser(userId);
+    return projectsWithRoles.stream()
+        .map(p -> projectMapper.mapProjectWithRoleToSummaryResponse(p.getProject(), p.getRole()))
+        .toList();
   }
 
   @Override
   @PreAuthorize("@security.canViewProject(#projectId)")
-  public ProjectResponse getUserProject(Long projectId) {
+  public ProjectSummaryResponse getUserProject(Long projectId) {
     Long userId = jwtAuthUtil.getCurrentUserId();
-    Project project = getAccessibleProjectById(userId, projectId);
-    return projectMapper.mapEntityToResponse(project);
+
+    var projectWithRole =
+        projectRepository
+            .findAccessibleProjectByIdWithRole(userId, projectId)
+            .orElseThrow(() -> new BadRequestException("Project not found"));
+
+    return projectMapper.mapProjectWithRoleToSummaryResponse(
+        projectWithRole.getProject(), projectWithRole.getRole());
   }
 
   @Override

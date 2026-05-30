@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -24,11 +25,13 @@ public class WebSecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
     httpSecurity
         .csrf(csrfConfig -> csrfConfig.disable())
+        .cors(Customizer.withDefaults())
         .sessionManagement(
             sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
             auth ->
-                auth.requestMatchers("/api/auth/**", "/webhooks/**")
+                //                auth.requestMatchers("/api/auth/**", "/webhooks/**")
+                auth.requestMatchers("/api/v1/account/auth/**", "/webhooks/**")
                     .permitAll()
                     .anyRequest()
                     .authenticated())

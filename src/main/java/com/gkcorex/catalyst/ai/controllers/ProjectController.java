@@ -14,7 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/projects")
+// @RequestMapping("/api/projects")
+@RequestMapping("/api/v1/workspace/projects")
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class ProjectController {
@@ -22,7 +23,7 @@ public class ProjectController {
   ProjectService projectService;
 
   @GetMapping("/{projectId}")
-  public ResponseEntity<ProjectResponse> getProject(@PathVariable Long projectId) {
+  public ResponseEntity<ProjectSummaryResponse> getProject(@PathVariable Long projectId) {
     return ResponseEntity.ok(projectService.getUserProject(projectId));
   }
 

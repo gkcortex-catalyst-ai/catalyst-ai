@@ -2,6 +2,7 @@ package com.gkcorex.catalyst.ai.services.impl;
 
 import com.gkcorex.catalyst.ai.dtos.project.FileContentResponse;
 import com.gkcorex.catalyst.ai.dtos.project.FileNode;
+import com.gkcorex.catalyst.ai.dtos.project.FileTreeResponse;
 import com.gkcorex.catalyst.ai.entities.Project;
 import com.gkcorex.catalyst.ai.entities.ProjectFile;
 import com.gkcorex.catalyst.ai.exceptions.ResourceNotFoundException;
@@ -45,9 +46,10 @@ public class ProjectFileServiceImpl implements ProjectFileService {
   String projectBucket;
 
   @Override
-  public List<FileNode> getFileTree(Long projectId) {
+  public FileTreeResponse getFileTree(Long projectId) {
     List<ProjectFile> projectFileList = projectFileRepository.findByProjectId(projectId);
-    return projectFileMapper.mapProjectFilesToFileNodes(projectFileList);
+    List<FileNode> projectFileNodes = projectFileMapper.mapProjectFilesToFileNodes(projectFileList);
+    return new FileTreeResponse(projectFileNodes);
   }
 
   @Override

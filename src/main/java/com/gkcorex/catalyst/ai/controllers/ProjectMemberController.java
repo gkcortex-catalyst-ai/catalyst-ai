@@ -14,7 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/projects/{projectId}/members")
+// @RequestMapping("/api/projects/{projectId}/members")
+@RequestMapping("/api/v1/workspace/projects/{projectId}/members")
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class ProjectMemberController {
