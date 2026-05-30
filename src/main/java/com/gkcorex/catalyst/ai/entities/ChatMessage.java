@@ -4,7 +4,6 @@ import com.gkcorex.catalyst.ai.enums.MessageRole;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.List;
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;

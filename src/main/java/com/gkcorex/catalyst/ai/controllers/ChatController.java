@@ -4,6 +4,7 @@ import com.gkcorex.catalyst.ai.dtos.chat.ChatRequest;
 import com.gkcorex.catalyst.ai.dtos.chat.ChatResponse;
 import com.gkcorex.catalyst.ai.services.AiGenerationService;
 import com.gkcorex.catalyst.ai.services.ChatService;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
-
-import java.util.List;
 
 @RestController
 @RequestMapping
@@ -33,7 +32,7 @@ public class ChatController {
   }
 
   @GetMapping("/projects/{projectId}")
-    public ResponseEntity<List<ChatResponse>> getChatHistory(@PathVariable Long projectId){
-      return ResponseEntity.ok(chatService.getProjectChatHistory(projectId));
+  public ResponseEntity<List<ChatResponse>> getChatHistory(@PathVariable Long projectId) {
+    return ResponseEntity.ok(chatService.getProjectChatHistory(projectId));
   }
 }

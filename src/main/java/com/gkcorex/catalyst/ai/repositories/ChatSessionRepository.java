@@ -4,5 +4,4 @@ import com.gkcorex.catalyst.ai.entities.ChatSession;
 import com.gkcorex.catalyst.ai.entities.ChatSessionId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ChatSessionRepository extends JpaRepository<ChatSession, ChatSessionId> {
-}
+public interface ChatSessionRepository extends JpaRepository<ChatSession, ChatSessionId> {}

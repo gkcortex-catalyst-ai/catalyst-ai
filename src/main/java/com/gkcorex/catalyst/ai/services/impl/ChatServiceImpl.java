@@ -9,13 +9,12 @@ import com.gkcorex.catalyst.ai.repositories.ChatMessageRepository;
 import com.gkcorex.catalyst.ai.repositories.ChatSessionRepository;
 import com.gkcorex.catalyst.ai.security.JwtAuthUtil;
 import com.gkcorex.catalyst.ai.services.ChatService;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,22 +22,23 @@ import java.util.List;
 @Slf4j
 public class ChatServiceImpl implements ChatService {
 
-    ChatMessageRepository chatMessageRepository;
+  ChatMessageRepository chatMessageRepository;
 
-    ChatSessionRepository chatSessionRepository;
+  ChatSessionRepository chatSessionRepository;
 
-    JwtAuthUtil jwtAuthUtil;
+  JwtAuthUtil jwtAuthUtil;
 
-    ChatMapper chatMapper;
+  ChatMapper chatMapper;
 
-    @Override
-    public List<ChatResponse> getProjectChatHistory(Long projectId) {
-        Long userId = jwtAuthUtil.getCurrentUserId();
+  @Override
+  public List<ChatResponse> getProjectChatHistory(Long projectId) {
+    Long userId = jwtAuthUtil.getCurrentUserId();
 
-        ChatSession chatSession = chatSessionRepository.getReferenceById(new ChatSessionId(projectId, userId));
+    ChatSession chatSession =
+        chatSessionRepository.getReferenceById(new ChatSessionId(projectId, userId));
 
-        List<ChatMessage> chatMessages = chatMessageRepository.findByChatSession(chatSession);
+    List<ChatMessage> chatMessages = chatMessageRepository.findByChatSession(chatSession);
 
-        return chatMapper.mapChatMessagesToChatResponses(chatMessages);
-    }
+    return chatMapper.mapChatMessagesToChatResponses(chatMessages);
+  }
 }

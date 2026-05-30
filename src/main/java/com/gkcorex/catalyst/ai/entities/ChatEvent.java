@@ -15,26 +15,26 @@ import lombok.experimental.FieldDefaults;
 @Table(name = "chat_events")
 public class ChatEvent {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
-    ChatMessage chatMessage;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(nullable = false)
+  ChatMessage chatMessage;
 
-    @Column(nullable = false)
-    Integer sequenceOrder;
+  @Column(nullable = false)
+  Integer sequenceOrder;
 
-    @Column(columnDefinition = "text")
-    String content;
+  @Column(columnDefinition = "text")
+  String content;
 
-    String filePath;
+  String filePath;
 
-    @Column(columnDefinition = "text")
-    String metadata;
+  @Column(columnDefinition = "text")
+  String metadata;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    ChatEventType type;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  ChatEventType type;
 }

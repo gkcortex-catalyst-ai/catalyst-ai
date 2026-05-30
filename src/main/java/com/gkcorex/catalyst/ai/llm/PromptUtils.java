@@ -1,8 +1,8 @@
- package com.gkcorex.catalyst.ai.llm;
+package com.gkcorex.catalyst.ai.llm;
 
- import java.time.LocalDateTime;
+import java.time.LocalDateTime;
 
- public class PromptUtils {
+public class PromptUtils {
 
   public static final String CODE_GENERATION_SYSTEM_PROMPT =
       """
@@ -152,13 +152,13 @@
  proper args before calling the read_files tool.
             - Always keep your message short and to the point.
             """;
- }
+}
 //
-//package com.gkcorex.catalyst.ai.llm;
+// package com.gkcorex.catalyst.ai.llm;
 //
-//import java.time.LocalDateTime;
+// import java.time.LocalDateTime;
 //
-//public class PromptUtils {
+// public class PromptUtils {
 //
 //  public static final String CODE_GENERATION_SYSTEM_PROMPT =
 //      """
@@ -452,4 +452,4 @@
 //
 //        You are a world-class frontend product engineer.
 //        """;
-//}
+// }
