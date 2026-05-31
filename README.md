@@ -12,10 +12,13 @@
 - Maven
 
 **Services:**
+- API Gateway
+- Discovery Service
 - Auth Service
 - Project Service
 - Project Member Service
-- User Service
+- Workspace Service
+- Intelligence Service
 
 **Design & Implementation:**
 - 3 Layer (Controller, Service, Repository)
@@ -45,12 +48,14 @@
 
 **API & Management:** 
 - REST API's
+- Server Sent Events
 - Postman
 
 **Payment & Subscription Management:** 
 - Stripe
 - Stripe Cli
 - Webhooks
+- Subscription
 
 **AI Integration:**
 - Spring AI 
@@ -58,3 +63,11 @@
 - LLM's
 - Chat Client
 - Advisors
+- Tool Calling
+
+**FE Integration:**
+- Vite
+- TypeScript
+- React.js
+- Tailwind CSS
+- Shadcn-ui
