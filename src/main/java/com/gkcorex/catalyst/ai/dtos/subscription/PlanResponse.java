@@ -4,7 +4,7 @@ public record PlanResponse(
     Long id,
     String name,
     Integer maxProjects,
-    Integer maxTokenPerDay,
+    Integer maxTokensPerDay,
     Integer maxPreview,
     Boolean unlimitedAi,
     String price) {}

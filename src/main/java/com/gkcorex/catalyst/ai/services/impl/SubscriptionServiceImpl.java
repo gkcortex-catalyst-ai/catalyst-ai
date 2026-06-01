@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class SubscriptionServiceImpl implements SubscriptionService {
 
+  // todo: update allowed projects in prod
   private final Integer FREE_TIER_PROJECTS_ALLOWED = 100;
 
   JwtAuthUtil jwtAuthUtil;

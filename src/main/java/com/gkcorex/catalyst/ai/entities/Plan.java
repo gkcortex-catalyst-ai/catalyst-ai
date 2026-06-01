@@ -23,12 +23,12 @@ public class Plan {
 
   Integer maxProjects;
 
-  Integer maxTokenPerDay;
+  Integer maxTokensPerDay;
 
   Integer maxPreviews;
 
   /*
-     Unlimited access to LLM, Ignore maxTokenPerDay if true
+     Unlimited access to LLM, Ignore maxTokensPerDay if true
   */
   Boolean unlimitedAi;
 

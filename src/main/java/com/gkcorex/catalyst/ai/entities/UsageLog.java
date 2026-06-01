@@ -1,30 +1,31 @@
 package com.gkcorex.catalyst.ai.entities;
 
-import jakarta.persistence.Id;
-import java.time.Instant;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import java.time.LocalDate;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
+@Entity
+@Table(
+    name = "usage_logs",
+    uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date"})})
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UsageLog {
 
-  @Id Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  Long id;
 
-  User user;
-
-  Project project;
-
-  String action;
+  @Column(name = "user_id", nullable = false)
+  Long userId;
 
   Integer tokensUsed;
 
-  Integer durationMs;
-
-  String metaData;
-
-  Instant createdAt;
+  @Column(nullable = false)
+  LocalDate date;
 }
