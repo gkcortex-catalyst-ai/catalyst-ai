@@ -43,6 +43,8 @@ public class UsageServiceImpl implements UsageService {
     SubscriptionResponse subscriptionResponse = subscriptionService.getCurrentSubscription();
     PlanResponse plan = subscriptionResponse.plan();
 
+    if(plan==null) return;
+
     LocalDate today = LocalDate.now();
     UsageLog todayLog =
         usageLogRepository
